@@ -1,0 +1,13 @@
+Index: kcm-touchpad-0.3.1/kcmtouchpad.cpp
+===================================================================
+--- kcm-touchpad-0.3.1.orig/kcmtouchpad.cpp	2010-04-11 20:34:50.509642139 -0400
++++ kcm-touchpad-0.3.1/kcmtouchpad.cpp	2010-04-11 20:35:50.388643170 -0400
+@@ -79,6 +79,8 @@
+     // "Touchpad Allow Moving" check box
+     connect(ui->TouchpadOffWOMoveCB, SIGNAL(toggled(bool)), this, SLOT(touchpadAllowedMoving(bool)));
+ 
++    // Kubuntu patch; don't show this, since the feature isn't there yet.
++    ui->SmartModeGB->setHidden(true);
+     //connect(ui->SmartModeEnableCB, SIGNAL(toggled(bool)), this, SLOT(smartModeEnabled(bool)));
+     //connect(ui->SmartModeDelayS, SIGNAL(valueChanged(int)), this, SLOT(smartModeDelayChanged(int)));
+ 

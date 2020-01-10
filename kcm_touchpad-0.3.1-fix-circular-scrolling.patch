@@ -1,0 +1,35 @@
+Index: kcm-touchpad-0.3.1/kcmtouchpad.cpp
+===================================================================
+--- kcm-touchpad-0.3.1.orig/kcmtouchpad.cpp	2010-07-19 11:41:02.128000002 -0400
++++ kcm-touchpad-0.3.1/kcmtouchpad.cpp	2010-07-19 11:42:52.032000003 -0400
+@@ -505,7 +505,7 @@
+         Touchpad::set_parameter("CircularScrolling", ui->ScrollCircularEnableCB->isChecked());
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_DIST)) {
+-        Touchpad::set_parameter("CircScrollDelta", ui->ScrollCircularSpeedS->value());
++        Touchpad::set_parameter("CircScrollDelta", ui->ScrollCircularSpeedS->value() / 100.0f);
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_TRIGGER)) {
+         Touchpad::set_parameter("CircScrollTrigger", ui->ScrollCircularCornersCBB->currentIndex());
+@@ -764,7 +764,7 @@
+         Touchpad::set_parameter("CircularScrolling", config.readEntry("CircularScrolling", -1));
+     }
+     if (propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_DIST)) {
+-        Touchpad::set_parameter("CircScrollDelta", config.readEntry("CircScrollDelta", -1));
++        Touchpad::set_parameter("CircScrollDelta", config.readEntry("CircScrollDelta", -1) / 100.0f);
+     }
+     if (propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_TRIGGER)) {
+         Touchpad::set_parameter("CircScrollTrigger", (Synaptics::ScrollTrigger)config.readEntry("CircScrollTrigger", -1));
+Index: kcm-touchpad-0.3.1/kcmtouchpadwidget.ui
+===================================================================
+--- kcm-touchpad-0.3.1.orig/kcmtouchpadwidget.ui	2010-07-19 11:41:11.892000001 -0400
++++ kcm-touchpad-0.3.1/kcmtouchpadwidget.ui	2010-07-19 11:43:20.840000002 -0400
+@@ -796,7 +796,7 @@
+                <string>Move angle (radians) of finger to generate a scroll event.</string>
+               </property>
+               <property name="minimum">
+-               <number>30</number>
++               <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>300</number>

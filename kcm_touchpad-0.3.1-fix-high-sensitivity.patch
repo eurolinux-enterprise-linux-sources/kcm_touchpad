@@ -1,0 +1,29 @@
+diff -Nur kcm-touchpad-0.3.1.orig/kcmtouchpadwidget.ui kcm-touchpad-0.3.1/kcmtouchpadwidget.ui
+--- kcm-touchpad-0.3.1.orig/kcmtouchpadwidget.ui	2010-01-12 14:02:07.000000000 +0100
++++ kcm-touchpad-0.3.1/kcmtouchpadwidget.ui	2010-04-24 00:56:02.175243897 +0200
+@@ -376,10 +376,10 @@
+              <string>Move distance of the finger for a vertical scroll event.</string>
+             </property>
+             <property name="minimum">
+-             <number>0</number>
++             <number>1</number>
+             </property>
+             <property name="maximum">
+-             <number>400</number>
++             <number>401</number>
+             </property>
+             <property name="singleStep">
+              <number>50</number>
+@@ -557,10 +557,10 @@
+              <string>Move distance of the finger for a horizontal scroll event.</string>
+             </property>
+             <property name="minimum">
+-             <number>0</number>
++             <number>1</number>
+             </property>
+             <property name="maximum">
+-             <number>400</number>
++             <number>401</number>
+             </property>
+             <property name="singleStep">
+              <number>50</number>

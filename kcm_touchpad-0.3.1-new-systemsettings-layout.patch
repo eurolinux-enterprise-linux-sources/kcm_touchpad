@@ -1,0 +1,12 @@
+diff -Nur mishaaq-kcm_touchpad-00370b5/touchpad.desktop mishaaq-kcm_touchpad-00370b5-fedora/touchpad.desktop
+--- mishaaq-kcm_touchpad-00370b5/touchpad.desktop	2010-01-12 06:02:07.000000000 -0700
++++ mishaaq-kcm_touchpad-00370b5-fedora/touchpad.desktop	2010-09-07 23:32:08.672140805 -0700
+@@ -10,7 +10,7 @@
+ X-KDE-Init-Symbol=touchpad
+ X-KDE-ParentApp=kcontrol
+ 
+-X-KDE-System-Settings-Parent-Category=keyboard-and-mouse
++X-KDE-System-Settings-Parent-Category=input-devices
+ X-KDE-Weight=50
+ 
+ Name=Touchpad

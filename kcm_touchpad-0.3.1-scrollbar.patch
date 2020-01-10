@@ -1,0 +1,42 @@
+diff -ur mishaaq-kcm_touchpad-00370b5/kcmtouchpadwidget.ui mishaaq-kcm_touchpad-00370b5-scrollbar/kcmtouchpadwidget.ui
+--- mishaaq-kcm_touchpad-00370b5/kcmtouchpadwidget.ui	2010-01-12 14:02:07.000000000 +0100
++++ mishaaq-kcm_touchpad-00370b5-scrollbar/kcmtouchpadwidget.ui	2011-02-08 11:23:16.000000000 +0100
+@@ -322,6 +322,27 @@
+        <string>Scrolling</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
++       <property name="margin">
++        <number>0</number>
++       </property>
++       <item>
++        <widget class="QScrollArea" name="scrollArea">
++         <property name="frameShape">
++          <enum>QFrame::NoFrame</enum>
++         </property>
++         <property name="horizontalScrollBarPolicy">
++          <enum>Qt::ScrollBarAlwaysOff</enum>
++         </property>
++         <widget class="QWidget" name="scrollAreaWidgetContents_2">
++          <property name="geometry">
++           <rect>
++            <x>0</x>
++            <y>0</y>
++            <width>505</width>
++            <height>484</height>
++           </rect>
++          </property>
++          <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QGroupBox" name="ScrollingGB">
+          <property name="title">
+@@ -844,6 +865,10 @@
+        </item>
+       </layout>
+      </widget>
++        </widget>
++       </item>
++      </layout>
++     </widget>
+      <widget class="QWidget" name="TappingTab">
+       <attribute name="title">
+        <string>Tapping</string>

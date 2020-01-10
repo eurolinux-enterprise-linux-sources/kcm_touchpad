@@ -1,0 +1,194 @@
+diff -Nur kcm-touchpad-0.3.1.orig/kcmtouchpad.cpp kcm-touchpad-0.3.1/kcmtouchpad.cpp
+--- kcm-touchpad-0.3.1.orig/kcmtouchpad.cpp	2010-04-24 00:21:40.000000000 +0200
++++ kcm-touchpad-0.3.1/kcmtouchpad.cpp	2010-04-24 00:49:46.345242942 +0200
+@@ -176,6 +176,17 @@
+     }
+ }
+ 
++const void* TouchpadConfig::get_parameter(const char* name)
++{
++    const void* result = Touchpad::get_parameter(name);
++    if (!result) {
++        setup_failed = true;
++        setEnabled(false);
++    }
++    
++    return result;
++}
++
+ /*
+  * This function is called when loading module.
+  * It loads configuration from file "kcmtouchpadrc".
+@@ -190,64 +201,134 @@
+     // loads every entry of configuration and sets corresponding widget
+     // when configuration doesn't exist collect actual value from driver
+ 
++    const void* value;
++
+     if (this->propertiesList.contains(SYNAPTICS_PROP_OFF)) {
+-        ui->TouchpadOnRB->setChecked(!config.readEntry("TouchpadOff", !(int)*(char*)Touchpad::get_parameter("TouchpadOff")));
+-        ui->TouchpadOffWOMoveCB->setCheckState(config.readEntry("TouchpadOff", (int)*(char*)Touchpad::get_parameter("TouchpadOff")) == 2 ? Qt::Checked : Qt::Unchecked);
++        value = get_parameter("TouchpadOff");
++        if (!value) return;
++        ui->TouchpadOnRB->setChecked(!config.readEntry("TouchpadOff", !(int)*(char*)value));
++
++        value = get_parameter("TouchpadOff");
++        if (!value) return;
++        ui->TouchpadOffWOMoveCB->setCheckState(config.readEntry("TouchpadOff", (int)*(char*)value) == 2 ? Qt::Checked : Qt::Unchecked);
+     }
+ 
+     //ui->SmartModeEnableCB->setCheckState(config.readEntry("SmartModeEnabled", false) ? Qt::Checked : Qt::Unchecked);
+     //ui->SmartModeDelayS->setValue(config.readEntry("SmartModeDelay", 1000));
+ 
+     if (this->propertiesList.contains(SYNAPTICS_PROP_FINGER)) {
+-        ui->SensitivityValueS->setValue(config.readEntry("FingerLow", *(int*)Touchpad::get_parameter("FingerLow") / 10));
++        value = get_parameter("FingerLow");
++        if (!value) return;
++        ui->SensitivityValueS->setValue(config.readEntry("FingerLow", *(int*)value / 10));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_SCROLL_EDGE)) {
+-        ui->ScrollVertEnableCB->setCheckState(config.readEntry("VertEdgeScroll", (int)*(char*)Touchpad::get_parameter("VertEdgeScroll")) ? Qt::Checked : Qt::Unchecked);
+-        ui->ScrollHorizEnableCB->setCheckState(config.readEntry("HorizEdgeScroll", (int)*(char*)Touchpad::get_parameter("HorizEdgeScroll")) ? Qt::Checked : Qt::Unchecked);
++        value = get_parameter("VertEdgeScroll");
++        if (!value) return;
++        ui->ScrollVertEnableCB->setCheckState(config.readEntry("VertEdgeScroll", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
++
++        value = get_parameter("HorizEdgeScroll");
++        if (!value) return;
++        ui->ScrollHorizEnableCB->setCheckState(config.readEntry("HorizEdgeScroll", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
++
+         if (this->propertiesList.contains(SYNAPTICS_PROP_COASTING_SPEED)) {
+-            ui->ScrollCoastingCornerEnableCB->setCheckState(config.readEntry("CornerCoasting", (int)*(char*)Touchpad::get_parameter("CornerCoasting")) ? Qt::Checked : Qt::Unchecked);
++            value = get_parameter("CornerCoasting");
++            if (!value) return;
++            ui->ScrollCoastingCornerEnableCB->setCheckState(config.readEntry("CornerCoasting", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
+         }
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_SCROLL_DISTANCE)) {
+-        ui->ScrollVertSpeedS->setValue(config.readEntry("VertScrollDelta", *(int*)Touchpad::get_parameter("VertScrollDelta")));
+-        ui->ScrollHorizSpeedS->setValue(config.readEntry("HorizScrollDelta", *(int*)Touchpad::get_parameter("HorizScrollDelta")));
++        value = get_parameter("VertScrollDelta");
++        if (!value) return;
++        ui->ScrollVertSpeedS->setValue(config.readEntry("VertScrollDelta", *(int*)value));
++
++        value = get_parameter("HorizScrollDelta");
++        if (!value) return;
++        ui->ScrollHorizSpeedS->setValue(config.readEntry("HorizScrollDelta", *(int*)value));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_SCROLL_TWOFINGER)) {
+-        ui->ScrollVertTFEnableCB->setCheckState(config.readEntry("VertTwoFingerScroll", (int)*(char*)Touchpad::get_parameter("VertTwoFingerScroll")) ? Qt::Checked : Qt::Unchecked);
+-        ui->ScrollHorizTFEnableCB->setCheckState(config.readEntry("HorizTwoFingerScroll", (int)*(char*)Touchpad::get_parameter("HorizTwoFingerScroll")) ? Qt::Checked : Qt::Unchecked);
++        value = get_parameter("VertTwoFingerScroll");
++        if (!value) return;
++        ui->ScrollVertTFEnableCB->setCheckState(config.readEntry("VertTwoFingerScroll", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
++
++        value = get_parameter("HorizTwoFingerScroll");
++        if (!value) return;
++        ui->ScrollHorizTFEnableCB->setCheckState(config.readEntry("HorizTwoFingerScroll", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_COASTING_SPEED)) {
+-        ui->ScrollCoastingEnableCB->setCheckState(config.readEntry("CoastingSpeed", *(double*)Touchpad::get_parameter("CoastingSpeed")) ? Qt::Checked : Qt::Unchecked);
+-        ui->ScrollCoastingSpeedS->setValue(config.readEntry("CoastingSpeed", *(double*)Touchpad::get_parameter("CoastingSpeed")) * 100.0f);
++        value = get_parameter("CoastingSpeed");
++        if (!value) return;
++        ui->ScrollCoastingEnableCB->setCheckState(config.readEntry("CoastingSpeed", *(double*)value) ? Qt::Checked : Qt::Unchecked);
++
++        value = get_parameter("CoastingSpeed");
++        if (!value) return;
++        ui->ScrollCoastingSpeedS->setValue(config.readEntry("CoastingSpeed", *(double*)value) * 100.0f);
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING)) {
+-        ui->ScrollCircularEnableCB->setCheckState(config.readEntry("CircularScrolling", (int)*(char*)Touchpad::get_parameter("CircularScrolling")) ? Qt::Checked : Qt::Unchecked);
++        value = get_parameter("CircularScrolling");
++        if (!value) return;
++        ui->ScrollCircularEnableCB->setCheckState(config.readEntry("CircularScrolling", (int)*(char*)value) ? Qt::Checked : Qt::Unchecked);
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_DIST)) {
+-        ui->ScrollCircularSpeedS->setValue(config.readEntry("CircScrollDelta", *(double*)Touchpad::get_parameter("CircScrollDelta")));
++        value = get_parameter("CircScrollDelta");
++        if (!value) return;
++        ui->ScrollCircularSpeedS->setValue(config.readEntry("CircScrollDelta", *(double*)value));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_CIRCULAR_SCROLLING_TRIGGER)) {
+-        ui->ScrollCircularCornersCBB->setCurrentIndex(config.readEntry("CircScrollTrigger", (int)*(char*)Touchpad::get_parameter("CircScrollTrigger")));
++        value = get_parameter("CircScrollTrigger");
++        if (!value) return;
++        ui->ScrollCircularCornersCBB->setCurrentIndex(config.readEntry("CircScrollTrigger", (int)*(char*)value));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_TAP_TIME)) {
+-        ui->TappingEnableCB->setCheckState(config.readEntry("MaxTapTime", *(int*)Touchpad::get_parameter("MaxTapTime")) ? Qt::Checked : Qt::Unchecked);
++        value = get_parameter("MaxTapTime");
++        if (!value) return;
++        ui->TappingEnableCB->setCheckState(config.readEntry("MaxTapTime", *(int*)value) ? Qt::Checked : Qt::Unchecked);
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_TAP_MOVE)) {
+-        ui->TappingMaxMoveValueS->setValue(config.readEntry("MaxTapMove", *(int*)Touchpad::get_parameter("MaxTapMove")));
++        value = get_parameter("MaxTapMove");
++        if (!value) return;
++        ui->TappingMaxMoveValueS->setValue(config.readEntry("MaxTapMove", *(int*)value));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_TAP_DURATIONS)) {
+-        ui->TappingTimeoutValueS->setValue(config.readEntry("SingleTapTimeout", *(int*)Touchpad::get_parameter("SingleTapTimeout")));
+-        ui->TappingDoubleTimeValueS->setValue(config.readEntry("MaxDoubleTapTime", *(int*)Touchpad::get_parameter("MaxDoubleTapTime")));
+-        ui->TappingClickTimeValueS->setValue(config.readEntry("ClickTime", *(int*)Touchpad::get_parameter("ClickTime")));
++        value = get_parameter("SingleTapTimeout");
++        if (!value) return;
++        ui->TappingTimeoutValueS->setValue(config.readEntry("SingleTapTimeout", *(int*)value));
++
++        value = get_parameter("MaxDoubleTapTime");
++        if (!value) return;
++        ui->TappingDoubleTimeValueS->setValue(config.readEntry("MaxDoubleTapTime", *(int*)value));
++
++        value = get_parameter("ClickTime");
++        if (!value) return;
++        ui->TappingClickTimeValueS->setValue(config.readEntry("ClickTime", *(int*)value));
+     }
+     if (this->propertiesList.contains(SYNAPTICS_PROP_TAP_ACTION)) {
+-        tappingButtonsMap[Synaptics::OneFinger] = config.readEntry("TapButton1", (int)*(char*)Touchpad::get_parameter("TapButton1"));
+-        tappingButtonsMap[Synaptics::TwoFingers] = config.readEntry("TapButton2", (int)*(char*)Touchpad::get_parameter("TapButton2"));
+-        tappingButtonsMap[Synaptics::ThreeFingers] = config.readEntry("TapButton3", (int)*(char*)Touchpad::get_parameter("TapButton3"));
+-        tappingButtonsMap[Synaptics::RightTop] = config.readEntry("RTCornerButton", (int)*(char*)Touchpad::get_parameter("RTCornerButton"));
+-        tappingButtonsMap[Synaptics::RightBottom] = config.readEntry("RBCornerButton", (int)*(char*)Touchpad::get_parameter("RBCornerButton"));
+-        tappingButtonsMap[Synaptics::LeftTop] = config.readEntry("LTCornerButton", (int)*(char*)Touchpad::get_parameter("LTCornerButton"));
+-        tappingButtonsMap[Synaptics::LeftBottom] = config.readEntry("LBCornerButton", (int)*(char*)Touchpad::get_parameter("LBCornerButton"));
++        value = get_parameter("TapButton1");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::OneFinger] = config.readEntry("TapButton1", (int)*(char*)value);
++
++        value = get_parameter("TapButton2");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::TwoFingers] = config.readEntry("TapButton2", (int)*(char*)value);
++
++        value = get_parameter("TapButton3");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::ThreeFingers] = config.readEntry("TapButton3", (int)*(char*)value);
++
++        value = get_parameter("RTCornerButton");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::RightTop] = config.readEntry("RTCornerButton", (int)*(char*)value);
++
++        value = get_parameter("RBCornerButton");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::RightBottom] = config.readEntry("RBCornerButton", (int)*(char*)value);
++
++        value = get_parameter("LTCornerButton");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::LeftTop] = config.readEntry("LTCornerButton", (int)*(char*)value);
++
++        value = get_parameter("LBCornerButton");
++        if (!value) return;
++        tappingButtonsMap[Synaptics::LeftBottom] = config.readEntry("LBCornerButton", (int)*(char*)value);
+     }
+ }
+ 
+diff -Nur kcm-touchpad-0.3.1.orig/kcmtouchpad.h kcm-touchpad-0.3.1/kcmtouchpad.h
+--- kcm-touchpad-0.3.1.orig/kcmtouchpad.h   2010-01-12 14:02:07.000000000 +0100
++++ kcm-touchpad-0.3.1/kcmtouchpad.h    2010-04-24 00:57:57.305243725 +0200
+@@ -56,6 +56,7 @@
+     bool apply();
+     static void applySensitivity(int val);
+     void enableProperties();
++    const void* get_parameter(const char* name);
+ 
+     Ui_TouchpadConfigWidget* ui;
+ 
